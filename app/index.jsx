@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     marginBottom: 12,
+    flexWrap: 'wrap',
   },
   smallAvatar: {
     width: 32,

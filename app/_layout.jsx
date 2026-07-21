@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, ScrollView, Platform, useWindowDimensions } from 'react-native';
 import { Slot, useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Layout() {
   const router = useRouter();
   const pathname = usePathname();
+  const { width } = useWindowDimensions();
+
+  const isMobile = width < 600;
 
   const RESUME_DRIVE_URL = 'https://drive.google.com/file/d/1xzH_s3KbD_MiXcB4COayKwNS49ehYeTx/view?usp=drivesdk';
 
@@ -15,7 +18,6 @@ export default function Layout() {
 
   const openAvatarImage = () => {
     const avatarSource = require('../assets/images/foto_formal.jpeg');
-    
     let imageUrl = '';
     if (typeof avatarSource === 'string') {
       imageUrl = avatarSource;
@@ -41,22 +43,31 @@ export default function Layout() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
-      
       <View style={styles.mainWrapper}>
-        <View style={styles.bannerContainer}>
+        
+        <View style={[styles.bannerContainer, { height: isMobile ? 140 : 200 }]}>
           <Image
             source={{ uri: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200' }}
             style={styles.bannerImage}
+            resizeMode="cover" 
           />
         </View>
 
         <View style={styles.profileSection}>
-          <View style={styles.avatarResumeRow}>
+          <View style={[styles.avatarResumeRow, { marginTop: isMobile ? -45 : -60 }]}>
             <View style={styles.avatarContainer}>
               <TouchableOpacity activeOpacity={0.8} onPress={openAvatarImage}>
                 <Image
                   source={require('../assets/images/foto_formal.jpeg')}
-                  style={styles.avatar}
+                  resizeMode="cover"
+                  style={[
+                    styles.avatar, 
+                    { 
+                      width: isMobile ? 90 : 130, 
+                      height: isMobile ? 90 : 130, 
+                      borderRadius: isMobile ? 45 : 65 
+                    }
+                  ]}
                 />
               </TouchableOpacity>
             </View>
@@ -68,25 +79,27 @@ export default function Layout() {
 
           <View style={styles.infoContainer}>
             <View style={styles.nameRow}>
-              <Text style={styles.nameText}>Khairin Naila Robiatul Adawiyah</Text>
+              <Text style={[styles.nameText, { fontSize: isMobile ? 20 : 26 }]}>
+                Khairin Naila Robiatul Adawiyah
+              </Text>
             </View>
 
             <Text style={styles.roleText}>Mobile Developer</Text>
 
-            <View style={styles.metaRow}>
+            <View style={[styles.metaRow, { flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? 6 : 0 }]}>
               <View style={styles.metaItem}>
                 <Ionicons name="location-outline" size={16} color="#71767b" />
                 <Text style={styles.metaText}>Indonesia</Text>
               </View>
 
-              <View style={[styles.metaItem, { marginLeft: 15 }]}>
+              <View style={[styles.metaItem, { marginLeft: isMobile ? 0 : 15 }]}>
                 <Ionicons name="calendar-outline" size={15} color="#71767b" />
                 <Text style={styles.metaText}>Joined Sept 2008</Text>
               </View>
             </View>
           </View>
 
-          <View style={styles.navbar}>
+          <View style={[styles.navbar, { gap: isMobile ? 12 : 35 }]}>
             {navItems.map((item) => {
               const isActive = pathname === item.path;
               return (
@@ -95,7 +108,7 @@ export default function Layout() {
                   style={[styles.navItem, isActive && styles.activeNavItem]}
                   onPress={() => router.push(item.path)}
                 >
-                  <Text style={[styles.navText, isActive && styles.activeNavText]}>
+                  <Text style={[styles.navText, { fontSize: isMobile ? 13 : 15 }, isActive && styles.activeNavText]}>
                     {item.label}
                   </Text>
                 </TouchableOpacity>
@@ -117,23 +130,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#16181c',
   },
-  topHeaderBar: {
-    width: '100%',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-  },
-  topHeaderInner: {
-    maxWidth: 900,
-    width: '100%',
-    alignSelf: 'center',
-  },
   mainWrapper: {
     maxWidth: 800,
     width: '100%',
     alignSelf: 'center',
   },
   bannerContainer: {
-    height: 200,
     width: '100%',
     borderRadius: 4,
     overflow: 'hidden',
@@ -141,16 +143,14 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
   },
   profileSection: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   avatarResumeRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    marginTop: -60,
   },
   avatarContainer: {
     padding: 3,
@@ -158,23 +158,20 @@ const styles = StyleSheet.create({
     borderRadius: 80,
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
     borderWidth: 4,
     borderColor: '#ffffff',
   },
   resumeBtn: {
     backgroundColor: '#00b4d8',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     borderRadius: 24,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   resumeBtnText: {
     color: '#ffffff',
     fontWeight: '700',
-    fontSize: 15,
+    fontSize: 14,
   },
   infoContainer: {
     marginTop: 12,
@@ -182,11 +179,10 @@ const styles = StyleSheet.create({
   nameRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    flexWrap: 'wrap',
   },
   nameText: {
     color: '#ffffff',
-    fontSize: 26,
     fontWeight: '800',
     letterSpacing: 0.3,
   },
@@ -197,8 +193,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 10,
   },
   metaItem: {
@@ -212,11 +206,10 @@ const styles = StyleSheet.create({
   },
   navbar: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 35,
+    justifyContent: 'space-around',
     borderBottomWidth: 1,
     borderBottomColor: '#2f3336',
-    marginTop: 25,
+    marginTop: 20,
   },
   navItem: {
     paddingVertical: 12,
@@ -229,14 +222,13 @@ const styles = StyleSheet.create({
   navText: {
     color: '#71767b',
     fontWeight: '700',
-    fontSize: 15,
   },
   activeNavText: {
     color: '#ffffff',
   },
   pageContent: {
     width: '100%',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
   },
 });

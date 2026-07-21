@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 
 export default function ExperiencePage() {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 600;
+
   const experiences = [
     {
       company: 'Pelatihan IT Software',
@@ -21,12 +24,12 @@ export default function ExperiencePage() {
     <View style={styles.container}>
       {experiences.map((exp, index) => (
         <View key={index} style={styles.experienceCard}>
-          <View style={styles.headerRow}>
+          <View style={[styles.headerRow, { flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'baseline' }]}>
             <Text style={styles.companyTitle}>
               {exp.company}{' '}
               <Text style={styles.locationText}>- {exp.location}</Text>
             </Text>
-            <Text style={styles.dateText}>{exp.period}</Text>
+            <Text style={[styles.dateText, { marginTop: isMobile ? 4 : 0 }]}>{exp.period}</Text>
           </View>
 
           <Text style={styles.roleText}>{exp.role}</Text>
@@ -53,17 +56,14 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
   headerRow: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
     marginBottom: 4,
   },
   companyTitle: {
     color: '#ffffff',
     fontSize: 18,
     fontWeight: '800',
-    flex: 1,
-    paddingRight: 10,
+    flexShrink: 1,
   },
   locationText: {
     color: '#8b98a5',
