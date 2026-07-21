@@ -163,15 +163,17 @@ const styles = StyleSheet.create({
   },
   resumeBtn: {
     backgroundColor: '#00b4d8',
-    paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 36,
     borderRadius: 24,
     marginBottom: 5,
+    height: 50,
+    width: 135,
   },
   resumeBtnText: {
     color: '#ffffff',
     fontWeight: '700',
-    fontSize: 14,
+    fontSize: 17,
   },
   infoContainer: {
     marginTop: 12,
