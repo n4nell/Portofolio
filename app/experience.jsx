@@ -1,49 +1,56 @@
 import React from 'react';
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 
+const EXPERIENCES = [
+  {
+    company: 'Pelatihan IT Software',
+    location: 'Jakarta, Indonesia',
+    period: 'Ags 2024 - Mei 2025',
+    role: 'Software Development Trainee',
+    points: [
+      'Mempelajari pengembangan aplikasi desktop menggunakan Microsoft Visual Studio.',
+      'Mengembangkan aplikasi mobile sederhana menggunakan Android Studio dengan Java dan desain antarmuka (UI).',
+      'Mengelola basis data menggunakan Microsoft SQL Server Management Studio (SSMS).',
+      'Mengintegrasikan aplikasi dengan API menggunakan Swagger.',
+    ],
+  },
+];
+
 export default function ExperiencePage() {
   const { width } = useWindowDimensions();
   const isMobile = width < 600;
 
-  const experiences = [
-    {
-      company: 'Pelatihan IT Software',
-      location: 'Jakarta, Indonesia',
-      period: 'Ags 2024 - Mei 2025',
-      role: 'Software Development Trainee',
-      points: [
-        'Mempelajari pengembangan aplikasi desktop menggunakan Microsoft Visual Studio.',
-        'Mengembangkan aplikasi mobile sederhana menggunakan Android Studio dengan Java dan desain antarmuka (UI).',
-        'Mengelola basis data menggunakan Microsoft SQL Server Management Studio (SSMS).',
-        'Mengintegrasikan aplikasi dengan API menggunakan Swagger.',
-      ],
-    },
-  ];
-
   return (
     <View style={styles.container}>
-      {experiences.map((exp, index) => (
-        <View key={index} style={styles.experienceCard}>
-          <View style={[styles.headerRow, { flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'baseline' }]}>
-            <Text style={styles.companyTitle}>
-              {exp.company}{' '}
-              <Text style={styles.locationText}>- {exp.location}</Text>
-            </Text>
-            <Text style={[styles.dateText, { marginTop: isMobile ? 4 : 0 }]}>{exp.period}</Text>
-          </View>
-
-          <Text style={styles.roleText}>{exp.role}</Text>
-
-          <View style={styles.bulletList}>
-            {exp.points.map((point, idx) => (
-              <View key={idx} style={styles.bulletItem}>
-                <Text style={styles.bulletDot}>•</Text>
-                <Text style={styles.bulletText}>{point}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
+      {EXPERIENCES.map((exp, index) => (
+        <ExperienceCard key={index} exp={exp} isMobile={isMobile} />
       ))}
+    </View>
+  );
+}
+
+function ExperienceCard({ exp, isMobile }) {
+  return (
+    <View style={styles.card}>
+      <View style={[styles.headerRow, isMobile && styles.headerRowMobile]}>
+        <Text style={styles.companyTitle}>
+          {exp.company} <Text style={styles.locationText}>- {exp.location}</Text>
+        </Text>
+        <Text style={[styles.dateText, isMobile && styles.dateTextMobile]}>
+          {exp.period}
+        </Text>
+      </View>
+
+      <Text style={styles.roleText}>{exp.role}</Text>
+
+      <View style={styles.bulletList}>
+        {exp.points.map((point, idx) => (
+          <View key={idx} style={styles.bulletItem}>
+            <Text style={styles.bulletDot}>•</Text>
+            <Text style={styles.bulletText}>{point}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
@@ -52,12 +59,19 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
   },
-  experienceCard: {
+  card: {
     marginBottom: 28,
   },
+
   headerRow: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'baseline',
     marginBottom: 4,
+  },
+  headerRowMobile: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   companyTitle: {
     color: '#ffffff',
@@ -75,6 +89,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  dateTextMobile: {
+    marginTop: 4,
+  },
+
   roleText: {
     color: '#e7e9ea',
     fontSize: 14,

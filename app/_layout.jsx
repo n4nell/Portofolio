@@ -3,125 +3,113 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Linking, ScrollView, P
 import { Slot, useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
+const RESUME_URL = 'https://drive.google.com/file/d/1xzH_s3KbD_MiXcB4COayKwNS49ehYeTx/view?usp=drivesdk';
+const NAV_ITEMS = [
+  { label: 'Tentang', path: '/' },
+  { label: 'Pengalaman', path: '/experience' },
+  { label: 'Keterampilan', path: '/skills' },
+  { label: 'Portofolio', path: '/portfolio' },
+];
+
 export default function Layout() {
   const router = useRouter();
   const pathname = usePathname();
   const { width } = useWindowDimensions();
-
   const isMobile = width < 600;
 
-  const RESUME_DRIVE_URL = 'https://drive.google.com/file/d/1xzH_s3KbD_MiXcB4COayKwNS49ehYeTx/view?usp=drivesdk';
-
-  const openResume = () => {
-    Linking.openURL(RESUME_DRIVE_URL);
+  const openResume = () => Linking.openURL(RESUME_URL);
+  
+  const openAvatar = () => {
+    const avatar = require('../assets/images/foto_formal.jpeg');
+    const url = avatar.default || avatar.uri || avatar;
+    Platform.OS === 'web' ? window.open(url, '_blank') : Linking.openURL(url);
   };
-
-  const openAvatarImage = () => {
-    const avatarSource = require('../assets/images/foto_formal.jpeg');
-    let imageUrl = '';
-    if (typeof avatarSource === 'string') {
-      imageUrl = avatarSource;
-    } else if (typeof avatarSource === 'object') {
-      imageUrl = avatarSource.default || avatarSource.uri || avatarSource;
-    }
-
-    if (imageUrl) {
-      if (Platform.OS === 'web') {
-        window.open(imageUrl, '_blank');
-      } else {
-        Linking.openURL(imageUrl);
-      }
-    }
-  };
-
-  const navItems = [
-    { label: 'Tentang', path: '/' },
-    { label: 'Pengalaman', path: '/experience' },
-    { label: 'Keterampilan', path: '/skills' },
-    { label: 'Portofolio', path: '/portfolio' },
-  ];
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       <View style={styles.mainWrapper}>
         
-        <View style={[styles.bannerContainer, { height: isMobile ? 140 : 200 }]}>
+        <View style={[styles.banner, isMobile && styles.bannerMobile]}>
           <Image
             source={{ uri: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200' }}
-            style={styles.bannerImage}
-            resizeMode="cover" 
+            style={styles.fullSize}
+            resizeMode="cover"
           />
         </View>
 
         <View style={styles.profileSection}>
-          <View style={[styles.avatarResumeRow, { marginTop: isMobile ? -45 : -60 }]}>
-            <View style={styles.avatarContainer}>
-              <TouchableOpacity activeOpacity={0.8} onPress={openAvatarImage}>
-                <Image
-                  source={require('../assets/images/foto_formal.jpeg')}
-                  resizeMode="cover"
-                  style={[
-                    styles.avatar, 
-                    { 
-                      width: isMobile ? 90 : 130, 
-                      height: isMobile ? 90 : 130, 
-                      borderRadius: isMobile ? 45 : 65 
-                    }
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
+          
+          <View style={[styles.avatarRow, isMobile && styles.avatarRowMobile]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={openAvatar} style={styles.avatarBorder}>
+              <Image
+                source={require('../assets/images/foto_formal.jpeg')}
+                resizeMode="cover"
+                style={[styles.avatar, isMobile ? styles.avatarMobile : styles.avatarDesktop]}
+              />
+            </TouchableOpacity>
 
             <TouchableOpacity style={styles.resumeBtn} onPress={openResume}>
-              <Text style={styles.resumeBtnText}>Resume</Text>
+              <Text style={styles.resumeText}>Resume</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={styles.infoContainer}>
-            <View style={styles.nameRow}>
-              <Text style={[styles.nameText, { fontSize: isMobile ? 20 : 26 }]}>
-                Khairin Naila Robiatul Adawiyah
-              </Text>
-            </View>
-
+          <View style={styles.infoBox}>
+            <Text style={[styles.nameText, isMobile && styles.nameTextMobile]}>
+              Khairin Naila Robiatul Adawiyah
+            </Text>
             <Text style={styles.roleText}>Mobile Developer</Text>
 
-            <View style={[styles.metaRow, { flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? 6 : 0 }]}>
-              <View style={styles.metaItem}>
-                <Ionicons name="location-outline" size={16} color="#71767b" />
-                <Text style={styles.metaText}>Indonesia</Text>
-              </View>
-
-              <View style={[styles.metaItem, { marginLeft: isMobile ? 0 : 15 }]}>
-                <Ionicons name="calendar-outline" size={15} color="#71767b" />
-                <Text style={styles.metaText}>Joined Sept 2008</Text>
-              </View>
+            <View style={styles.metaRow}>
+              <MetaItem icon="location-outline" text="Indonesia" />
+              <MetaItem icon="calendar-outline" text="Joined Sept 2008" />
             </View>
           </View>
 
-          <View style={[styles.navbar, { gap: isMobile ? 12 : 35 }]}>
-            {navItems.map((item) => {
-              const isActive = pathname === item.path;
-              return (
-                <TouchableOpacity
-                  key={item.path}
-                  style={[styles.navItem, isActive && styles.activeNavItem]}
-                  onPress={() => router.push(item.path)}
-                >
-                  <Text style={[styles.navText, { fontSize: isMobile ? 13 : 15 }, isActive && styles.activeNavText]}>
-                    {item.label}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+          <View style={styles.navbar}>
+            {NAV_ITEMS.map((item) => (
+              <NavButton 
+                key={item.path}
+                label={item.label}
+                isActive={pathname === item.path}
+                isMobile={isMobile}
+                onPress={() => router.push(item.path)}
+              />
+            ))}
           </View>
         </View>
 
         <View style={styles.pageContent}>
           <Slot />
         </View>
+
       </View>
     </ScrollView>
+  );
+}
+
+function MetaItem({ icon, text }) {
+  return (
+    <View style={styles.metaItem}>
+      <Ionicons name={icon} size={15} color="#71767b" />
+      <Text style={styles.metaText}>{text}</Text>
+    </View>
+  );
+}
+
+function NavButton({ label, isActive, isMobile, onPress }) {
+  return (
+    <TouchableOpacity 
+      style={[styles.navItem, isActive && styles.activeNavItem]} 
+      onPress={onPress}
+    >
+      <Text style={[
+        styles.navText, 
+        isMobile && styles.navTextMobile, 
+        isActive && styles.activeNavText
+      ]}>
+        {label}
+      </Text>
+    </TouchableOpacity>
   );
 }
 
@@ -130,29 +118,42 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#16181c',
   },
+  scrollContent: {
+    paddingBottom: 40,
+  },
   mainWrapper: {
     maxWidth: 800,
     width: '100%',
     alignSelf: 'center',
   },
-  bannerContainer: {
-    width: '100%',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  bannerImage: {
+  fullSize: {
     width: '100%',
     height: '100%',
   },
+
+  banner: {
+    width: '100%',
+    height: 200,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  bannerMobile: {
+    height: 140,
+  },
+
   profileSection: {
     paddingHorizontal: 16,
   },
-  avatarResumeRow: {
+  avatarRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    marginTop: -60,
   },
-  avatarContainer: {
+  avatarRowMobile: {
+    marginTop: -45,
+  },
+  avatarBorder: {
     padding: 3,
     backgroundColor: '#16181c',
     borderRadius: 80,
@@ -161,40 +162,50 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: '#ffffff',
   },
+  avatarDesktop: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+  },
+  avatarMobile: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+  },
+
   resumeBtn: {
     backgroundColor: '#00b4d8',
-    paddingVertical: 12,
-    paddingHorizontal: 36,
+    paddingVertical: 10,
+    paddingHorizontal: 24,
     borderRadius: 24,
-    marginBottom: 5,
-    height: 50,
-    width: 135,
   },
-  resumeBtnText: {
+  resumeText: {
     color: '#ffffff',
     fontWeight: '700',
-    fontSize: 17,
+    fontSize: 15,
   },
-  infoContainer: {
+
+  infoBox: {
     marginTop: 12,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
   },
   nameText: {
     color: '#ffffff',
     fontWeight: '800',
+    fontSize: 26,
     letterSpacing: 0.3,
+  },
+  nameTextMobile: {
+    fontSize: 20,
   },
   roleText: {
     color: '#8f98a0',
     fontSize: 15,
     marginTop: 4,
-    fontWeight: '400',
   },
   metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
     marginTop: 10,
   },
   metaItem: {
@@ -206,6 +217,7 @@ const styles = StyleSheet.create({
     color: '#71767b',
     fontSize: 14,
   },
+
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -215,7 +227,7 @@ const styles = StyleSheet.create({
   },
   navItem: {
     paddingVertical: 12,
-    borderBottomWidth: 4,
+    borderBottomWidth: 3,
     borderBottomColor: 'transparent',
   },
   activeNavItem: {
@@ -224,12 +236,16 @@ const styles = StyleSheet.create({
   navText: {
     color: '#71767b',
     fontWeight: '700',
+    fontSize: 15,
+  },
+  navTextMobile: {
+    fontSize: 13,
   },
   activeNavText: {
     color: '#ffffff',
   },
+
   pageContent: {
-    width: '100%',
     paddingVertical: 16,
     paddingHorizontal: 16,
   },

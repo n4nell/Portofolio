@@ -3,8 +3,15 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 
 export default function AboutPage() {
+  const SKILLS = [
+    <>Pengelolaan database (<Text style={styles.boldText}>MySQL, phpMyAdmin</Text>)</>,
+    <>Desain UI/UX (<Text style={styles.boldText}>Figma</Text>)</>,
+    <>Hasil dari <Text style={styles.boldText}>pembelajaran mandiri, kursus online</Text>, & <Text style={styles.boldText}>proyek akademik</Text></>,
+  ];
+
   return (
     <View style={styles.container}>
+      
       <View style={styles.pinnedHeader}>
         <Octicons name="pin" size={14} color="#71767b" />
         <Text style={styles.pinnedText}>Pinned Article</Text>
@@ -13,56 +20,41 @@ export default function AboutPage() {
       <View style={styles.authorRow}>
         <Image
           source={require('../assets/images/foto_formal.jpeg')}
-          style={styles.smallAvatar}
+          style={styles.avatar}
         />
         <Text style={styles.authorName}>Khairin Naila Robiatul Adawiyah</Text>
-        <Text style={styles.dotSeparator}>•</Text>
-        <Text style={styles.dateText}>08 September 2008</Text>
+        <Text style={styles.metaText}>•  08 September 2008</Text>
       </View>
 
-      <Text style={styles.greetingTitle}>
-        👋 Halo, Saya Khairin Naila Robiatul Adawiyah
-      </Text>
-
-      <Text style={styles.paragraph}>
-        Siswa dengan minat pada <Text style={styles.boldText}>pengembangan aplikasi mobile Android</Text>.
-      </Text>
+      <Text style={styles.title}>👋 Halo, Saya Khairin Naila Robiatul Adawiyah</Text>
 
       <Text style={styles.paragraph}>
         Memiliki pengalaman menggunakan <Text style={styles.boldText}>Android Studio</Text> dan{' '}
-        <Text style={styles.boldText}>Expo</Text> sebagai lingkungan pengembangan, serta pemahaman dasar mengenai:
+        <Text style={styles.boldText}>Expo</Text>, serta pemahaman dasar mengenai:
       </Text>
 
       <View style={styles.bulletList}>
-        <View style={styles.bulletItem}>
-          <Text style={styles.bulletDot}>•</Text>
-          <Text style={styles.bulletText}>
-            <Text style={styles.boldText}>Pengelolaan database</Text> menggunakan <Text style={styles.boldText}>MySQL</Text> dan <Text style={styles.boldText}>phpMyAdmin</Text>
-          </Text>
-        </View>
-
-        <View style={styles.bulletItem}>
-          <Text style={styles.bulletDot}>•</Text>
-          <Text style={styles.bulletText}>
-            <Text style={styles.boldText}>Desain UI/UX</Text> menggunakan <Text style={styles.boldText}>Figma</Text>
-          </Text>
-        </View>
-
-        <View style={styles.bulletItem}>
-          <Text style={styles.bulletDot}>•</Text>
-          <Text style={styles.bulletText}>
-            Kemampuan yang diperoleh melalui <Text style={styles.boldText}>pembelajaran mandiri, kursus online</Text>, dan <Text style={styles.boldText}>proyek-proyek akademik</Text>
-          </Text>
-        </View>
+        {SKILLS.map((item, index) => (
+          <BulletItem key={index}>{item}</BulletItem>
+        ))}
       </View>
 
       <Text style={styles.paragraph}>
-        Didukung <Text style={styles.boldText}>semangat belajar</Text>, <Text style={styles.boldText}>kemampuan berpikir logis</Text>, dan <Text style={styles.boldText}>memecahkan masalah</Text>, serta <Text style={styles.boldText}>antusiasme untuk terus mengembangkan kemampuan</Text> di lingkungan kerja.
+        Didukung <Text style={styles.boldText}>semangat belajar</Text>, <Text style={styles.boldText}>berpikir logis</Text>, dan <Text style={styles.boldText}>problem solving</Text> untuk terus berkembang di dunia kerja.
       </Text>
 
       <Text style={styles.paragraph}>
         <Text style={styles.boldText}>Mari terhubung dan membangun solusi mobile yang bermanfaat bersama!</Text>
       </Text>
+    </View>
+  );
+}
+
+function BulletItem({ children }) {
+  return (
+    <View style={styles.bulletItem}>
+      <Text style={styles.bulletDot}>•</Text>
+      <Text style={styles.paragraph}>{children}</Text>
     </View>
   );
 }
@@ -89,7 +81,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     flexWrap: 'wrap',
   },
-  smallAvatar: {
+  avatar: {
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -99,15 +91,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 15,
   },
-  dotSeparator: {
+  metaText: {
     color: '#71767b',
     fontSize: 14,
   },
-  dateText: {
-    color: '#71767b',
-    fontSize: 14,
-  },
-  greetingTitle: {
+  title: {
     color: '#ffffff',
     fontSize: 20,
     fontWeight: '800',
@@ -117,31 +105,25 @@ const styles = StyleSheet.create({
     color: '#e7e9ea',
     fontSize: 15,
     lineHeight: 24,
-    marginBottom: 16,
+    marginBottom: 12,
+    flex: 1,
   },
   boldText: {
     color: '#ffffff',
     fontWeight: '700',
   },
   bulletList: {
-    marginBottom: 16,
+    marginBottom: 8,
     paddingLeft: 8,
   },
   bulletItem: {
     flexDirection: 'row',
-    marginBottom: 8,
     alignItems: 'flex-start',
   },
   bulletDot: {
     color: '#e7e9ea',
     fontSize: 16,
-    marginRight: 12,
+    marginRight: 10,
     lineHeight: 24,
-  },
-  bulletText: {
-    color: '#e7e9ea',
-    fontSize: 15,
-    lineHeight: 24,
-    flex: 1,
   },
 });

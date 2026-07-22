@@ -1,83 +1,44 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { Octicons, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 
+const SKILL_SECTIONS = [
+  {
+    title: 'Perangkat',
+    icon: <Octicons name="tools" size={20} color="#1d9bf0" />,
+    items: ['Android Studio', 'Visual Studio', 'Microsoft SQL Server'],
+  },
+  {
+    title: 'Keterampilan Teknis',
+    icon: <MaterialCommunityIcons name="laptop" size={22} color="#1d9bf0" />,
+    items: ['UI/UX Design','Java', ' React Native'],
+  },
+  {
+    title: 'Keterampilan Non-Teknis',
+    icon: <Ionicons name="people-outline" size={22} color="#1d9bf0" />,
+    items: ['Pemecahan Masalah', 'Berorientasi pada Detail', 'Kemampuan Komunikasi', 'Kolaborasi Tim'],
+  },
+];
+
 export default function SkillsPage() {
-
-  const tools = [
-    'Android Studio',
-    'Visual Studio',
-    'Microsoft SQL Server',
-  ];
-
-  const hardSkills = [
-    'UI/UX Design',
-    'Java',
-    'React Native',
-  ];
-
-  const softSkills = [
-    'Pemecahan Masalah',
-    'Berorientasi pada Detail',
-    'Kemampuan Komunikasi',
-    'Kolaborasi Tim',
-  ];
-
   return (
     <View style={styles.container}>
-      <View style={styles.sectionRow}>
-        <View style={styles.iconBadge}>
-          <Octicons name="tools" size={20} color="#1d9bf0" />
-        </View>
+      {SKILL_SECTIONS.map((section, idx) => (
+        <View key={idx} style={styles.sectionRow}>
+          <View style={styles.iconBadge}>{section.icon}</View>
 
-        <View style={styles.contentColumn}>
-          <Text style={styles.sectionTitle}>Perangkat</Text>
-          <View style={styles.listContainer}>
-            {tools.map((item, index) => (
-              <View key={index} style={styles.bulletItem}>
+          <View style={styles.contentColumn}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            
+            {section.items.map((item, itemIdx) => (
+              <View key={itemIdx} style={styles.bulletItem}>
                 <Text style={styles.bulletDot}>•</Text>
                 <Text style={styles.itemText}>{item}</Text>
               </View>
             ))}
           </View>
         </View>
-      </View>
-
-      <View style={styles.sectionRow}>
-        <View style={styles.iconBadge}>
-          <MaterialCommunityIcons name="laptop" size={22} color="#1d9bf0" />
-        </View>
-
-        <View style={styles.contentColumn}>
-          <Text style={styles.sectionTitle}>Keterampilan Teknis</Text>
-          <View style={styles.listContainer}>
-            {hardSkills.map((item, index) => (
-              <View key={index} style={styles.bulletItem}>
-                <Text style={styles.bulletDot}>•</Text>
-                <Text style={styles.itemText}>{item}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.sectionRow}>
-        <View style={styles.iconBadge}>
-          <Ionicons name="people-outline" size={22} color="#1d9bf0" />
-        </View>
-
-        <View style={styles.contentColumn}>
-          <Text style={styles.sectionTitle}>Keterampilan Non-Teknis</Text>
-          <View style={styles.listContainer}>
-            {softSkills.map((item, index) => (
-              <View key={index} style={styles.bulletItem}>
-                <Text style={styles.bulletDot}>•</Text>
-                <Text style={styles.itemText}>{item}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </View>
+      ))}
     </View>
   );
 }
@@ -109,9 +70,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 8,
-  },
-  listContainer: {
-    paddingLeft: 2,
   },
   bulletItem: {
     flexDirection: 'row',

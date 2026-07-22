@@ -4,8 +4,8 @@ import { View, Text, StyleSheet } from 'react-native';
 export default function PortfolioPage() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Portfolioooooooooooooooooooooooooooooooooo</Text>
-      <Text style={styles.title}>(belum selesai ya iniiiiii, progressss)</Text>
+      <Text style={styles.title}>Portfoliooooooooooooooooooooooooooooooo</Text>
+      <Text style={styles.subtitle}>(belum selesai ya iniiiiii, progresssssssss)</Text>
     </View>
   );
 }
@@ -14,11 +14,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justify: 'center',
+    paddingHorizontal: 20, 
   },
   title: {
     color: '#ffffff',
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+    maxWidth: '90%',
+  },
+  subtitle: {
+    color: '#71767b', 
+    fontSize: 14,
+    textAlign: 'center',
   },
 });
