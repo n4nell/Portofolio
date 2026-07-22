@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 24,
+    marginBottom: 5,
   },
   resumeText: {
     color: '#ffffff',

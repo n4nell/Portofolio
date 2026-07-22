@@ -29,6 +29,10 @@ export default function AboutPage() {
       <Text style={styles.title}>👋 Halo, Saya Khairin Naila Robiatul Adawiyah</Text>
 
       <Text style={styles.paragraph}>
+        Siswa dengan minat pada <Text style={styles.boldText}>pengembangan aplikasi mobile Android</Text>.
+      </Text>
+
+      <Text style={styles.paragraph}>
         Memiliki pengalaman menggunakan <Text style={styles.boldText}>Android Studio</Text> dan{' '}
         <Text style={styles.boldText}>Expo</Text>, serta pemahaman dasar mengenai:
       </Text>
@@ -46,6 +50,7 @@ export default function AboutPage() {
       <Text style={styles.paragraph}>
         <Text style={styles.boldText}>Mari terhubung dan membangun solusi mobile yang bermanfaat bersama!</Text>
       </Text>
+
     </View>
   );
 }
